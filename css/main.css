@@ -1,0 +1,126 @@
+/*http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, hr, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline; }
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, menu, nav, section {
+	display: block; }
+body {
+	line-height: 1; }
+ol, ul {
+	list-style: none; }
+blockquote, q {
+	quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after {
+	content: '';
+	content: none; }
+table {
+	border-collapse: collapse;
+	border-spacing: 0; }
+/*v2.0 over*/
+
+html, body
+{
+	width:100%; height:100%; overflow:hidden;
+	position:absolute; top:0; left:0;
+	background-size:cover; background-position:center;
+}
+#container
+{
+	width:auto;  height:100%;
+	background-image:url("../image/bg.jpg");
+	background-position: center 100%;
+	background-size: auto 100%;
+	overflow:hidden;
+}
+#form
+{
+	width: 100%; height:6em;
+	position: absolute; top: 56%; left: 0;
+}
+#text
+{
+	-webkit-appearance: none ;
+	appearance: none ;
+	border: 2px solid #f8ba38;
+	width: 60%; height: 3em;
+	position: absolute;
+	top: 0%; left:20%;
+	font-size: 0.9em;
+	border-radius: 10px/8px;
+	box-shadow: 0 0 10px #f8ba38;
+	padding-left: 1em;
+}
+#text::-webkit-input-placeholder
+{
+	color:#dab866;
+	text-align: center;
+
+}
+#submit
+{
+	width: 40%;
+	height: 2.4em;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-image: url("../image/btn.png");
+	position: absolute;
+	bottom: 0;
+	left: 30%;
+}
+#yellow, #redpacket
+{
+	width:100%;  height:100%;
+	background-position: center 100%;
+	background-size: auto 100%;
+	position: absolute; top:0; left:0;
+}
+#yellow
+{
+	background-image:url("../image/yellow.png");
+}
+#redpacket
+{
+	background-image:url("../image/rp.png");
+}
+#smallYellow
+{
+	width:100%;  height:100%;
+	background-position: center 100%;
+	background-size: auto 100%;
+	position: absolute; top:0; left:0;
+	background-image:url("../image/smallYellow.png");
+	display: none;
+}
+#smallYellow p
+{
+	position: absolute;
+	top: 46%;
+	left: 0;
+	width: 100%;
+	text-align: center;
+}
+#statement
+{
+	width:auto;  height:100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+#statement p
+{
+	width: 100%;
+	position: absolute;
+	bottom: 4%;
+	left: 0;
+	text-align: center;
+	font-size: 0.9em;
+	color: #e60012;
+}
