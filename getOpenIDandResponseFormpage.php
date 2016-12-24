@@ -19,13 +19,12 @@
     </div>
     <div id="redpacket"></div>
     <div id="form">
-        <input id="text" type="text" placeholder="输入9位红包码" name="ResPacketCode" pattern="^[a-e][a-z0-9]{8}$" title="红包码输入错误" />
+        <input id="text" type="text" placeholder="输入9位红包码" name="ResPacketCode" />
         <div id="submit"></div>
     </div>
 	<div id="resultMat">
-		<p></p>
+		<p></p> <!-- 结果文字 -->
 	</div>
-	
 </section>
 </body>
 <script>

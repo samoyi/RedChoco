@@ -26,6 +26,7 @@ table {
 	border-spacing: 0; }
 /*v2.0 over*/
 
+
 html, body
 {
 	width:100%; height:100%; overflow:hidden;
@@ -47,33 +48,26 @@ html, body
 }
 #text
 {
-	-webkit-appearance: none ;
-	appearance: none ;
-	border: 2px solid #f8ba38;
-	width: 60%; height: 3em;
-	position: absolute;
-	top: 0%; left:20%;
 	font-size: 0.9em;
-	border-radius: 10px/8px;
+	width: 60%; height: 3em; padding-left: 1em;
+	position: absolute; top: 0%; left:20%;
+	border: 2px solid #f8ba38; border-radius: 10px/8px;
 	box-shadow: 0 0 10px #f8ba38;
-	padding-left: 1em;
+	-webkit-appearance: none ;
+	appearance: none ;	
 }
 #text::-webkit-input-placeholder
 {
 	color:#dab866;
 	text-align: center;
-
 }
 #submit
 {
-	width: 40%;
-	height: 2.4em;
+	width: 40%; height: 2.4em;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-image: url("../image/btn.png");
-	position: absolute;
-	bottom: 0;
-	left: 30%;
+	position: absolute; bottom: 0; left: 30%;
 }
 #mat, #redpacket
 {
@@ -101,26 +95,19 @@ html, body
 }
 #resultMat p
 {
-	position: absolute;
-	top: 46%;
-	left: 0;
 	width: 100%;
+	position: absolute; top: 46%; left: 0;
 	text-align: center;
 }
 #statement
 {
 	width:auto;  height:100%;
-	position: absolute;
-	top: 0;
-	left: 0;
+	position: absolute; top: 0; left: 0;
 }
 #statement p
 {
-	width: 100%;
-	position: absolute;
-	bottom: 4%;
-	left: 0;
-	text-align: center;
 	font-size: 0.9em;
-	color: #e60012;
+	width: 100%;
+	position: absolute; bottom: 4%; left: 0;
+	text-align: center; color: #e60012;
 }
