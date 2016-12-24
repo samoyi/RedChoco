@@ -15,14 +15,14 @@
 	<div id="statement">
 		<p>* 此次活动的最终解释权归官方所有</p>
 	</div>
-    <div id="yellow">
+    <div id="mat">
     </div>
     <div id="redpacket"></div>
     <div id="form">
         <input id="text" type="text" placeholder="输入9位红包码" name="ResPacketCode" pattern="^[a-e][a-z0-9]{8}$" title="红包码输入错误" />
         <div id="submit"></div>
     </div>
-	<div id="smallYellow">
+	<div id="resultMat">
 		<p></p>
 	</div>
 	

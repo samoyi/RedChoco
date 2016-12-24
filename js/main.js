@@ -1,27 +1,26 @@
-var oContainer = document.querySelector("#container");
-
-var oBtn = document.querySelector("#submit"),
+var oContainer = document.querySelector("#container"),
+	oBtn = document.querySelector("#submit"),
     oTxt = document.querySelector("#text"),
-    oStatement = document.querySelector("#statement");
-var oRedPacket = document.querySelector("#redpacket"),
-    oYellow = document.querySelector("#yellow"),
-    oSmallYellow = document.querySelector("#smallYellow");
+    oStatement = document.querySelector("#statement"),
+	oRedPacket = document.querySelector("#redpacket"),
+    oMat = document.querySelector("#mat"),
+    oResultMat = document.querySelector("#resultMat");
 
-oContainer.style.height = oRedPacket.style.height = oYellow.style.height = oStatement.style.height = oContainer.offsetHeight + "px";
-oContainer.style.width = oRedPacket.style.width = oYellow.style.width = oStatement.style.width = oContainer.offsetWidth + "px";
+oContainer.style.height = oRedPacket.style.height = oMat.style.height = oStatement.style.height = oContainer.offsetHeight + "px";
+oContainer.style.width = oRedPacket.style.width = oMat.style.width = oStatement.style.width = oContainer.offsetWidth + "px";
 
 
-var oResult = oSmallYellow.querySelector("p");
+var oResult = oResultMat.querySelector("p");
 function showResult()
 {
     oResult.innerHTML = "正在检测红包码……";
-    oSmallYellow.style.display = "block";
-    oSmallYellow.style.backgroundColor = "rgba(0,0,0,0.5)";
+    oResultMat.style.display = "block";
+    oResultMat.style.backgroundColor = "rgba(0,0,0,0.5)";
 }
 function hideResult()
 {
-    oSmallYellow.style.display = "none";
-    oSmallYellow.style.backgroundColor = "transparent";
+    oResultMat.style.display = "none";
+    oResultMat.style.backgroundColor = "transparent";
     oResult.innerHTML = "";
     document.removeEventListener("touchend", hideResult);
 }
@@ -52,7 +51,6 @@ oBtn.addEventListener("touchend", function()
 		var data =  "OpenID=" + sOpenID + "&ResPacketCode=" + sRedPacketCode + "&uniappname=" + sUniappname;
 		xhr.send(data);
 	}
-    
 });
 
 document.addEventListener("touchmove",function(ev)
