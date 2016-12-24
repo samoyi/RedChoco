@@ -8,7 +8,7 @@ $sReceiveOpenIDUrl = 'http://www.funca.org/redChoco/getOpenIDandResponseFormpage
 
 $sFetchOpenIDUrl = $sFetchOpenIDUrl_half . urlencode($sReceiveOpenIDUrl); 
 header("location: $sFetchOpenIDUrl");
-//$sFetchOpenIDUrl_half = 'http://wxd.bak365.net/qiaosbm/MobileHtml/PrePurCust/GetOpenID.aspx?Url=';
+
 ?>
 
    
