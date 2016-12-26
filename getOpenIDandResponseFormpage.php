@@ -27,6 +27,9 @@
 	</div>
 </section>
 </body>
+<?php 
+	//require 'update.php';
+?>
 <script>
 var sOpenID = <?php echo json_encode($sOpenID); ?>,
     sUniappname = <?php echo json_encode(UniAppName); ?>;
