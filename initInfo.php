@@ -1,6 +1,6 @@
 <?php
 
-require 'merchantsInfo/' . UniAppName . '_initInfo.php';
+require 'WechatRedPack/merchantsInfo/' . UniAppName . '_initInfo.php';
 
 
 //跳转回调地址。

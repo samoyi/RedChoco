@@ -17,7 +17,7 @@ if( isResPacketCode($sRedPacketCode) )
 	$nRedPacketErrorCode = 0;
 	$sRedPacketCode = trim($sRedPacketCode);
 	
-	require "mysql_check_code.php";
+	require "check_code.php";
 	$WXredPacket  = new WXredPacket($sRedPacketCode, $sOpenID, UniAppName);
 	$nCodeStatus = $WXredPacket->redPacket();
 	
@@ -47,15 +47,16 @@ if( isResPacketCode($sRedPacketCode) )
 		{	
 			if( gettype($nCodeStatus) === "integer" )
 			{	
-				require "RedPacket.class.php";
+				require "WechatRedPack/RedPacket.class.php";
                 $RedPacket = new RedPacket;
                 $result = $RedPacket->sendOrdinaryRedPacket($sOpenID, $nCodeStatus);
 				
-				if($result){   
+				if($result === 'success'){
 					echo "领取成功，请返回拆红包。";
 				}
 				else{
 					echo "很遗憾，没有中奖哦！！"; // post ssl 或 红包参数导致的失败
+					$nCodeStatus = $WXredPacket->addLogs( $result );
 				}
 			}
 			else
