@@ -1,10 +1,11 @@
-<?php	
-// 注意：
-/*
- *  需要在该文件填写cert.pem证书文件和key.pem证书文件所在的真实路径，并保证这两个证书无法被他人访问到
- *  搜索以下两个关键词来替换成真实的路径：
- *  “cert.pem文件所在目录”  “key.pem文件所在目录”
- */
+﻿<?php	
+-// 注意：
+-/*
+- *  需要在该文件填写cert.pem证书文件和key.pem证书文件所在的真实路径，并保证这两个证书无法被他人访问到
+- *  搜索以下两个关键词来替换成真实的路径：
+- *  “cert.pem文件所在目录”  “key.pem文件所在目录”
+- */
+	
 	class RedPacket
 	{
 	    private function curl_get($url)//发送GET请求
@@ -12,11 +13,14 @@
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $output = curl_exec($ch);
             curl_close($ch);
         }
 
+        private $curl_post_ssl_err = '';
+		
 		private function curl_post_ssl($url, $data, $second=30,$aHeader=array())
 		{
 			$ch = curl_init();
@@ -30,11 +34,8 @@
 			curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
 			curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
 			
-			//以下两种方式需选择一种
-			
-			//第一种方法，cert 与 key 分别属于两个.pem文件
 			//默认格式为PEM，可以注释
-			//curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
+			curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
 			curl_setopt($ch,CURLOPT_SSLCERT,'cert.pem文件所在目录'.CERT_PEM_NAME);
 			//默认格式为PEM，可以注释
 			//curl_setopt($ch, CURLOPT_SSLKEYTYPE, 'PEM');
@@ -56,7 +57,7 @@
 			}
 			else { 
 				$error = curl_errno($ch);
-				file_put_contents('curl_post_ssl_err.txt', $error."\n", FILE_APPEND); // 记录错误
+				$this->curl_post_ssl_err = $error;
 				curl_close($ch);
 				return false;
 			}
@@ -168,7 +169,7 @@
 			$url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack';
 			$result = $this->curl_post_ssl($url, $data);
 			if(!$result){
-				return false;
+			    return $this->curl_post_ssl_err;
 			}
 
 			// 判断是否有红包设置导致的出错
@@ -185,10 +186,9 @@
 			file_put_contents("signErr.txt", json_encode($xmlArr));
 			if( $xmlArr["result_code"] === "FAIL" )
 			{
-				file_put_contents('red_packet_error.txt', $error."\n", FILE_APPEND); // 记录错误
-				return false;
+				return $xmlArr["err_code_des"];
 			}
-			return $result;
+			return 'success';
 		}
 	}
 ?>
