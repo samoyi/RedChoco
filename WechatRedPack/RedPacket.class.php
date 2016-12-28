@@ -8,17 +8,6 @@
 	
 	class RedPacket
 	{
-	    private function curl_get($url)//发送GET请求
-        {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-            // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $output = curl_exec($ch);
-            curl_close($ch);
-        }
-
         private $curl_post_ssl_err = '';
 		
 		private function curl_post_ssl($url, $data, $second=30,$aHeader=array())
