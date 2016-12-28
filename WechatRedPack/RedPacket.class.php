@@ -34,11 +34,7 @@
 			curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
 			curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
 			
-			//默认格式为PEM，可以注释
-			curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
 			curl_setopt($ch,CURLOPT_SSLCERT,'cert.pem文件所在目录'.CERT_PEM_NAME);
-			//默认格式为PEM，可以注释
-			//curl_setopt($ch, CURLOPT_SSLKEYTYPE, 'PEM');
 			curl_setopt($ch, CURLOPT_SSLKEY, 'key.pem文件所在目录'.KEY_PEM_NAME);
 
 			if( count($aHeader) >= 1 ){
