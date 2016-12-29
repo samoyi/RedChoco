@@ -1,15 +1,18 @@
-﻿<?php	
--// 注意：
--/*
-- *  需要在该文件填写cert.pem证书文件和key.pem证书文件所在的真实路径，并保证这两个证书无法被他人访问到
-- *  搜索以下两个关键词来替换成真实的路径：
-- *  “cert.pem文件所在目录”  “key.pem文件所在目录”
-- */
+<?php	
 	
 	class RedPacket
 	{
-        private $curl_post_ssl_err = '';
-		
+	    private function curl_get($url)//发送GET请求
+        {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+            // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $output = curl_exec($ch);
+            curl_close($ch);
+        }
+
 		private function curl_post_ssl($url, $data, $second=30,$aHeader=array())
 		{
 			$ch = curl_init();
@@ -23,8 +26,15 @@
 			curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
 			curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
 			
-			curl_setopt($ch,CURLOPT_SSLCERT,'cert.pem文件所在目录'.CERT_PEM_NAME);
-			curl_setopt($ch, CURLOPT_SSLKEY, 'key.pem文件所在目录'.KEY_PEM_NAME);
+			//以下两种方式需选择一种
+			
+			//第一种方法，cert 与 key 分别属于两个.pem文件
+			//默认格式为PEM，可以注释
+			curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
+			curl_setopt($ch,CURLOPT_SSLCERT,getcwd(). '/pem/'.CERT_PEM_NAME);
+			//默认格式为PEM，可以注释
+			curl_setopt($ch, CURLOPT_SSLKEYTYPE, 'PEM');
+			curl_setopt($ch, CURLOPT_SSLKEY, getcwd(). '/pem/'.KEY_PEM_NAME);
 
 			if( count($aHeader) >= 1 ){
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $aHeader);
@@ -42,7 +52,7 @@
 			}
 			else { 
 				$error = curl_errno($ch);
-				$this->curl_post_ssl_err = $error;
+				$this->curl_get('http://red-space.cn/RedChocoErr/displayErr.php?curl_post_ssl_err=' . $error);
 				curl_close($ch);
 				return false;
 			}
@@ -154,7 +164,7 @@
 			$url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack';
 			$result = $this->curl_post_ssl($url, $data);
 			if(!$result){
-			    return $this->curl_post_ssl_err;
+				return false;
 			}
 
 			// 判断是否有红包设置导致的出错
@@ -168,11 +178,13 @@
 			}
 			$xmlArr = xml2array ( $xmlobj );
 
+			file_put_contents("signErr.txt", json_encode($xmlArr));
 			if( $xmlArr["result_code"] === "FAIL" )
 			{
-				return $xmlArr["err_code_des"];
+				$this->curl_get('http://red-space.cn/RedChocoErr/displayErr.php?red_packet_error=' . SEND_NAME .' '. $xmlArr["err_code_des"]);
+				return false;
 			}
-			return 'success';
+			return $result;
 		}
 	}
 ?>
