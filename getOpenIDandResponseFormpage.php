@@ -28,7 +28,7 @@
 </section>
 </body>
 <?php 
-	//require 'updateTip.php';
+	//require 'manage/updateTip.php';
 ?>
 <script>
 var sOpenID = <?php echo json_encode($sOpenID); ?>,
