@@ -5,7 +5,7 @@
 - *  搜索以下两个关键词来替换成真实的路径：
 - *  “cert.pem文件所在目录”  “key.pem文件所在目录”
 - */
-	
+ 
 	class RedPacket
 	{
         private $curl_post_ssl_err = '';
