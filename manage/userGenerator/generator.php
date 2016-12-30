@@ -131,7 +131,7 @@ oGenerateBtn.addEventListener("click", function()
 				}
 			}
 		}, false);
-		xhr.open("get", "generator.php?sPHPContent=" + encodeURIComponent(sPHPContent) + "&sUniAppName=" + sUniAppName + "&sRedirectUrl=" + encodeURIComponent(sRedirectUrl) + "&sAppID=" + sAppID, true);
+		xhr.open("get", <?php echo json_encode($_SERVER['PHP_SELF']); ?> + "?sPHPContent=" + encodeURIComponent(sPHPContent) + "&sUniAppName=" + sUniAppName + "&sRedirectUrl=" + encodeURIComponent(sRedirectUrl) + "&sAppID=" + sAppID, true);
 		xhr.send(null);
 	}
 	else{
