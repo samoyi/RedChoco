@@ -102,7 +102,7 @@
 	<input type="text" id="remark" placeholder="红包备注 REMARK" />
 </section>
 <input type="text" id="uniappname" placeholder="uniAppName" /><br />
-<input type="text" id="redirectUrl" value="http://www.funca.org/redChoco/getOpenIDandResponseFormpage.php" placeholder="授权回调url。正常情况下这个值是固定的，可以直接写在HTML中" /><br /><br />
+<input type="text" id="redirectUrl" placeholder="授权回调url。正常情况下这个值是固定的，可以直接写在HTML中" /><br /><br />
 <input type="button" id="generate" value="生成" />
 
 </body>
