@@ -2,16 +2,52 @@
 
 	if( !empty($_GET['sPHPContent']) )
 	{
+		// 生成配置文件————————————————————————————————————————————————
 		$sPHPContent = $_GET['sPHPContent'];
 		$sRedirectUrl = $_GET['sRedirectUrl'];
 		$sAppID = $_GET['sAppID'];
 		$sUniAppName = $_GET['sUniAppName'];
-		// 授权页url
-		$sOAuthUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $sAppID . "&redirect_uri=" . urlencode($sRedirectUrl . '?uniappname=' . $sUniAppName) . '&response_type=code&scope=snsapi_base&state=123#wechat_redirect';
-		// 完整的配置文件字符内容
-		$sContent = '<?php' . PHP_EOL . PHP_EOL . $sPHPContent . '// ' . $sOAuthUrl . PHP_EOL . PHP_EOL . '?>';
+		
+		
+		if( empty($_GET['sAppSecret']) ) // 使用了自己的回调域名
+		{
+			// 授权页url
+			$sOAuthUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" . $sAppID . "&redirect_uri=" . urlencode($sRedirectUrl . '?uniappname=' . $sUniAppName) . '&response_type=code&scope=snsapi_base&state=123#wechat_redirect';
+			// 完整的配置文件字符内容
+			$sContent = '<?php' . PHP_EOL . PHP_EOL . $sPHPContent . '// ' . $sOAuthUrl . PHP_EOL . PHP_EOL . '?>';
+		}
+		else// 使用了第三方的回调域名
+		{
+			$sContent = '<?php' . PHP_EOL . PHP_EOL . $sPHPContent . '?>';
+			// 生成放在第三方域名里的文件
+			$contentOfSendOpenIDToMe = file_get_contents("generatorComponets/sendOpenIDToMe.php");
+			//str_replace("''", "'".$sAppID."'", $contentOfSendOpenIDToMe);
+			$index = 0;
+			$nPos = 0;
+			$offset = 0;
+			do{
+				$nPos = strpos($contentOfSendOpenIDToMe, "''", $offset);
+				$offset = ++$nPos;
+				file_put_contents("words.txt", $nPos.' ', FILE_APPEND);
+				$index++;
+			}
+			while($index<5);
+			
+/* 			str_replace("''", "'".$sAppID."'", $contentOfSendOpenIDToMe, $index);
+			file_put_contents("index0.txt", $index);
+ 			str_replace("''", "'".$_GET['sAppSecret']."'", $contentOfSendOpenIDToMe, $index);
+			file_put_contents("index1.txt", $index);
+			str_replace("''", "'".$sRedirectUrl."'", $contentOfSendOpenIDToMe, $index);
+			file_put_contents("index2.txt", $index);
+			str_replace("''", "'".$sUniAppName."'", $contentOfSendOpenIDToMe, $index); 
+file_put_contents("index3.txt", $index);		
+			file_put_contents('sendOpenIDToMe.php', $contentOfSendOpenIDToMe); */
+		}
+		
 		// 生成配置文件
 		file_put_contents($sUniAppName.'_initInfo.php', $sContent);
+
+		
 		
 		// 检查两个证书文件放了几个，放了的直接用uniAppName重命名
 		function checkPemExistanceStateAndRenameExsited($sUniAppName)
@@ -43,6 +79,8 @@
 				return "0";
 			}
 		}
+		
+		
 		switch( checkPemExistanceStateAndRenameExsited($sUniAppName) )
 		{
 			case "2":{
@@ -103,7 +141,8 @@
 </section>
 <input type="text" id="uniappname" placeholder="uniAppName" /><br />
 <input type="text" id="redirectUrl" placeholder="授权回调url。正常情况下这个值是固定的，可以直接写在HTML中" /><br /><br />
-<input type="button" id="generate" value="生成" />
+<input type="button" id="generate_ownDomain" value="生成（使用了自己的回调域名）" />
+<input type="button" id="generate_otherDomain" value="生成（使用了第三方的回调域名）" />
 
 </body>
 <script>
@@ -111,13 +150,15 @@
 
 let sInitPHPContent = "",
 	aInitPHPInfo = Array.from( document.querySelector("#initPHPInfo").querySelectorAll("input") ),
-	oGenerateBtn = document.querySelector("#generate");
+	oGenerateBtn_ownDomain = document.querySelector("#generate_ownDomain"),
+	generate_otherDomain = document.querySelector("#generate_otherDomain");
 
-oGenerateBtn.addEventListener("click", function()
-{	
+function sendInfoToPhp(bIsOtherDomain)
+{
 	let sUniAppName = document.querySelector("#uniappname").value.trim(),
 		sRedirectUrl = document.querySelector("#redirectUrl").value.trim(),
-		sAppID =  document.querySelector("#appid").value.trim();
+		sAppID =  document.querySelector("#appid").value.trim(),
+		sAppSecret =  document.querySelector("#appsecret").value.trim();
 		
 	if( isNoVacancyInput( aInitPHPInfo ) && sUniAppName && sRedirectUrl )
 	{
@@ -131,12 +172,28 @@ oGenerateBtn.addEventListener("click", function()
 				}
 			}
 		}, false);
-		xhr.open("get", <?php echo json_encode($_SERVER['PHP_SELF']); ?> + "?sPHPContent=" + encodeURIComponent(sPHPContent) + "&sUniAppName=" + sUniAppName + "&sRedirectUrl=" + encodeURIComponent(sRedirectUrl) + "&sAppID=" + sAppID, true);
+		if( bIsOtherDomain ){
+			xhr.open("get", <?php echo json_encode($_SERVER['PHP_SELF']); ?> + "?sPHPContent=" + encodeURIComponent(sPHPContent) + "&sUniAppName=" + sUniAppName + "&sRedirectUrl=" + encodeURIComponent(sRedirectUrl) + "&sAppID=" + sAppID + "&sAppSecret=" + sAppSecret, true);
+		}
+		else{
+			xhr.open("get", <?php echo json_encode($_SERVER['PHP_SELF']); ?> + "?sPHPContent=" + encodeURIComponent(sPHPContent) + "&sUniAppName=" + sUniAppName + "&sRedirectUrl=" + encodeURIComponent(sRedirectUrl) + "&sAppID=" + sAppID, true);
+		}
+		
 		xhr.send(null);
 	}
 	else{
 		alert("没填完");
 	}
+}
+oGenerateBtn_ownDomain.addEventListener("click", function()
+{	
+	generate_otherDomain.disabled = 'disabled';
+	sendInfoToPhp();
+});	
+generate_otherDomain.addEventListener("click", function()
+{	
+	oGenerateBtn_ownDomain.disabled = 'disabled';
+	sendInfoToPhp(true);
 });	
 
 // 检查参数数组中每一个input节点是否都填了有效字符
