@@ -10,6 +10,7 @@
 	define('APPID', ''); // 公众平台APPID
 	define('APPSECRET', ''); // APPSECRET
 	define('RECEIVE_URL', ''); // 我的域名下接受OpenID的地址
+	define("UNIAPPNAME", ''); // 用来区别是从哪个公众号来的
 	
 	// 根据授权的code获得OpenID	
 	function getOpenID($sCode)
@@ -34,7 +35,7 @@
 	$sCode = $_GET['code']; // 获得从授权页面得到的code
 	$sOpenID = getOpenID($sCode); // 根据code获取OpenID
 	
-	$receiveUrlWithOpenID = RECEIVE_URL . '?openid=' . $sOpenID;
+	$receiveUrlWithOpenID = RECEIVE_URL . '?openid=' . $sOpenID . '&uniappname=' . UNIAPPNAME;
 	httpGet($receiveUrlWithOpenID);
 	
 ?>
