@@ -1,5 +1,5 @@
-<?php
 
+<?php
 define("UniAppName", $_POST["uniappname"]);
 require 'initInfo.php';
 
@@ -51,17 +51,30 @@ if( isResPacketCode($sRedPacketCode) )
                 $RedPacket = new RedPacket;
                 $result = $RedPacket->sendOrdinaryRedPacket($sOpenID, $nCodeStatus);
 				
+				function isIntOrIntStr($n){
+					if( !is_numeric($n) ){
+						return false;
+					}
+					return is_int($n) || is_int((int)$n);
+				}
+				
 				if($result === 'success'){
 					echo "领取成功，请返回拆红包。";
 				}
+				elseif{ isIntOrIntStr($result) ) // ssl错误
+					// 将该兑换码重新变成没用过的状态
+					// 
+					echo  "红包发送失败。<br />请稍后重试。"; 
+				}
 				else{
-					echo "很遗憾，没有中奖哦！！"; // post ssl 或 红包参数导致的失败
-					$nCodeStatus = $WXredPacket->addLogs( $result );
+					echo "很遗憾，没有中奖哦！！"; // 微信接口相关的失败
+					$WXredPacket->addLogs( $result );
 				}
 			}
 			else
 			{
 				echo  "很遗憾，没有中奖哦！！！"; // 查询数据库时异常返回导致的失败
+				$WXredPacket->addLogs( '查询数据库时异常返回 ' . $nCodeStatus );
 			}
 		}
 	}
