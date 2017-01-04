@@ -21,27 +21,15 @@
 			$sContent = '<?php' . PHP_EOL . PHP_EOL . $sPHPContent . '?>';
 			// 生成放在第三方域名里的文件
 			$contentOfSendOpenIDToMe = file_get_contents("generatorComponets/sendOpenIDToMe.php");
-			//str_replace("''", "'".$sAppID."'", $contentOfSendOpenIDToMe);
-			$index = 0;
-			$nPos = 0;
-			$offset = 0;
-			do{
-				$nPos = strpos($contentOfSendOpenIDToMe, "''", $offset);
-				$offset = ++$nPos;
-				file_put_contents("words.txt", $nPos.' ', FILE_APPEND);
-				$index++;
-			}
-			while($index<5);
-			
-/* 			str_replace("''", "'".$sAppID."'", $contentOfSendOpenIDToMe, $index);
-			file_put_contents("index0.txt", $index);
- 			str_replace("''", "'".$_GET['sAppSecret']."'", $contentOfSendOpenIDToMe, $index);
-			file_put_contents("index1.txt", $index);
-			str_replace("''", "'".$sRedirectUrl."'", $contentOfSendOpenIDToMe, $index);
-			file_put_contents("index2.txt", $index);
-			str_replace("''", "'".$sUniAppName."'", $contentOfSendOpenIDToMe, $index); 
-file_put_contents("index3.txt", $index);		
-			file_put_contents('sendOpenIDToMe.php', $contentOfSendOpenIDToMe); */
+			$nPos = strpos($contentOfSendOpenIDToMe, "''");
+			$contentOfSendOpenIDToMe = substr_replace($contentOfSendOpenIDToMe, "'".$sAppID."'", $nPos, 2);
+			$nPos = strpos($contentOfSendOpenIDToMe, "''");
+			$contentOfSendOpenIDToMe = substr_replace($contentOfSendOpenIDToMe, "'".$_GET['sAppSecret']."'", $nPos, 2);
+			$nPos = strpos($contentOfSendOpenIDToMe, "''");
+			$contentOfSendOpenIDToMe = substr_replace($contentOfSendOpenIDToMe, "'".$sRedirectUrl."'", $nPos, 2);
+			$nPos = strpos($contentOfSendOpenIDToMe, "''");
+			$contentOfSendOpenIDToMe = substr_replace($contentOfSendOpenIDToMe, "'".$sUniAppName."'", $nPos, 2);
+			file_put_contents('sendOpenIDToMe.php', $contentOfSendOpenIDToMe); 
 		}
 		
 		// 生成配置文件
@@ -80,23 +68,23 @@ file_put_contents("index3.txt", $index);
 			}
 		}
 		
-		
+		$sFileGenerationTip = empty($_GET['sAppSecret']) ? '配置文件已生成' : "配置文件已生成\nsendOpenIDToMe.php已生成";
 		switch( checkPemExistanceStateAndRenameExsited($sUniAppName) )
 		{
 			case "2":{
-				echo "配置文件已生成\n两个证书都改好名了";
+				echo "$sFileGenerationTip\n两个证书都改好名了";
 				break;
 			}
 			case 'cert':{
-				echo "配置文件已生成\n缺少cert.pem证书，key.pem证书改好名了";
+				echo "$sFileGenerationTip\n缺少cert.pem证书，key.pem证书改好名了";
 				break;
 			}
 			case 'key':{
-				echo "配置文件已生成\n缺少key.pem证书，cert.pem证书改好名了";
+				echo "$sFileGenerationTip\n缺少key.pem证书，cert.pem证书改好名了";
 				break;
 			}
 			case "0":{
-				echo "配置文件已生成\n缺少pem证书文件";
+				echo "$sFileGenerationTip\n缺少pem证书文件";
 				break;
 			}
 		}
