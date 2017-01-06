@@ -17,6 +17,7 @@ if( isResPacketCode($sRedPacketCode) )
 	$nRedPacketErrorCode = 0;
 	$sRedPacketCode = trim($sRedPacketCode);
 	
+	// 以下三行引入后端兑换码检测文件。该文件不包含在本项目中
 	require "check_code.php";
 	$WXredPacket  = new WXredPacket($sRedPacketCode, $sOpenID, UniAppName);
 	$nCodeStatus = $WXredPacket->redPacket();
@@ -61,7 +62,7 @@ if( isResPacketCode($sRedPacketCode) )
 				}
 				else{
 					echo "很遗憾，没有中奖哦！！"; // 微信接口相关的失败
-					$WXredPacket->addLogs( $result );
+					$WXredPacket->addLogs( $result ); // 记录错误
 				}
 			}
 			else
@@ -69,7 +70,7 @@ if( isResPacketCode($sRedPacketCode) )
 				echo  "查询兑换码失败。<br />请稍后重试。"; // 查询数据库时异常返回导致的失败
 				// 将该兑换码重新变成没用过的状态
 				// 
-				$WXredPacket->addLogs( '查询数据库时异常返回 ' . $nCodeStatus );
+				$WXredPacket->addLogs( '查询数据库时异常返回 ' . $nCodeStatus ); // 记录错误
 			}
 		}
 	}
