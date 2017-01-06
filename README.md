@@ -28,7 +28,6 @@
 5. 把配置文件放到 ```WechatRedPack/merchantsInfo/```，该配置文件中有一行注释，是微信授权页的url，作为用户访问入口
 6. 在```handleRedPacketDraw.php```中，引入你自己的后端兑换码检验代码。本例引入了```check_code.php```并使用了```WXredPacket```类
 7. 根据你自己的情况，修改不同结果时的提示文字
-8. 确保账户钱够
 
 ## 没有微信网页回调域名情况下的使用方法（需要通过拥有域名的第三方转发OpenID）
 
