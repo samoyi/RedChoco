@@ -51,25 +51,30 @@ if( isResPacketCode($sRedPacketCode) )
 				require "WechatRedPack/RedPacket.class.php";
                 $RedPacket = new RedPacket;
                 $result = $RedPacket->sendOrdinaryRedPacket($sOpenID, $nCodeStatus);
-				
+
 				if($result === 'success'){
 					echo "领取成功，请返回拆红包。";
 				}
-				elseif{ isIntOrIntStr($result) ) // ssl错误
-					// 将该兑换码重新变成没用过的状态
-					// 
-					echo  "红包发送失败。<br />请稍后重试。"; 
+				elseif( strstr($result, '该用户今日操作次数超过限制') ){
+					echo "今日领取红包达到最大数量<br />请明日再试";
+					$WXredPacket->resetCodeStatus(); // 将该兑换码重新变成没用过的状态
+					$WXredPacket->addLogs( $result ); // 记录错误
+				}
+				elseif( strstr($result, '此请求可能存在风险') ){
+					echo "微信账号异常<br />请使用常用的活跃微信号领取";
+					$WXredPacket->resetCodeStatus(); // 将该兑换码重新变成没用过的状态
+					$WXredPacket->addLogs( $result ); // 记录错误
 				}
 				else{
-					echo "很遗憾，没有中奖哦！！"; // 微信接口相关的失败
+					echo "红包发送失败。<br />请稍后重试。"; // cUrl错误或其他微信接口相关的失败
+					$WXredPacket->resetCodeStatus(); // 将该兑换码重新变成没用过的状态
 					$WXredPacket->addLogs( $result ); // 记录错误
 				}
 			}
 			else
 			{
 				echo  "查询兑换码失败。<br />请稍后重试。"; // 查询数据库时异常返回导致的失败
-				// 将该兑换码重新变成没用过的状态
-				// 
+				$WXredPacket->resetCodeStatus(); // 将该兑换码重新变成没用过的状态
 				$WXredPacket->addLogs( '查询数据库时异常返回 ' . $nCodeStatus ); // 记录错误
 			}
 		}
@@ -79,4 +84,5 @@ else
 {
 	echo '兑奖码输入错误';
 }
+
 ?>
