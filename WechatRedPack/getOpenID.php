@@ -26,7 +26,11 @@
 		{
 			$url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' .APPID . '&secret=' . APPSECRET . '&code=' . $sCode . '&grant_type=authorization_code';
 			$result = httpGet($url);
-			return json_decode($result)->openid;
+			$sOpenID = json_decode($result)->openid;
+			if( empty($sOpenID) ){ // 记录通过code获取OpenID时的错误
+				file_put_contents('manage/err_fromCodeToOpenID.txt', $result."\n", FILE_APPEND);
+			}
+			return $sOpenID;
 		}
 		function httpGet($url)//发送GET请求
 		{

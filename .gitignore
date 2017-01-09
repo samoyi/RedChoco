@@ -2,3 +2,4 @@ WechatRedPack/RedPacket_real.class.php
 .idea/
 getAuthorUrl.php
 handleRedPacketDraw_inuse.php
+WechatRedPack/getOpenID_inuse.php
