@@ -1,11 +1,23 @@
 <?php
 
-
-	if( !empty($_GET['openid']) )
+	$aOpenIDArgName = array( //第三方提供的OpenID的参数名可能不统一，这里列出所有的参数名
+		'openid', 'WchOpenID'
+	);
+	function hasOpenIDArg($aOpenIDArgName)
+	{
+		foreach($aOpenIDArgName as $value){
+			if( !empty($_GET[$value]) ){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	if( hasOpenIDArg($aOpenIDArgName) ) // 从第三方接受OpenID
 	{
 		$sOpenID = $_GET['openid'];
 	}
-	elseif( !empty($_GET['code']) )
+	elseif( !empty($_GET['code']) ) // 自己进行授权
 	{
 		require 'initInfo.php';
 
