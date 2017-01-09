@@ -1,5 +1,6 @@
 <?php
 
+	
 	$aOpenIDArgName = array( //第三方提供的OpenID的参数名可能不统一，这里列出所有的参数名
 		'openid', 'WchOpenID'
 	);
