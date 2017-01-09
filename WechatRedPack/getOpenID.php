@@ -8,15 +8,15 @@
 	{
 		foreach($aOpenIDArgName as $value){
 			if( !empty($_GET[$value]) ){
-				return true;
+				return $value;
 			}
 		}
 		return false;
 	}
 	
-	if( hasOpenIDArg($aOpenIDArgName) ) // 从第三方接受OpenID
+	if( $sOpenIDArgName = hasOpenIDArg($aOpenIDArgName) ) // 从第三方接受OpenID
 	{
-		$sOpenID = $_GET['openid'];
+		$sOpenID = $_GET[$sOpenIDArgName];
 	}
 	elseif( !empty($_GET['code']) ) // 自己进行授权
 	{
