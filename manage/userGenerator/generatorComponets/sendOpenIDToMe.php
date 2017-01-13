@@ -17,7 +17,14 @@
 	{
 		$url = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=' .APPID . '&secret=' . APPSECRET . '&code=' . $sCode . '&grant_type=authorization_code';
 		$result = httpGet($url);
-		return json_decode($result)->openid;
+		$sOpenID = json_decode($result)->openid;
+		if( !empty($sOpenID) && strlen($sOpenID)>5 ){ // 获得了合理的OpenID
+			return $sOpenID;
+		}
+		else{
+			// 发送get请求到自己的域名下记录错误以便查看
+			httpGet('http://www.myDomain.com/RedChoco/log/fromThird.php?err=' . 'FromThird____'.$url.'__'.$result);
+		}
 	}
 	
 	//发送GET请求
