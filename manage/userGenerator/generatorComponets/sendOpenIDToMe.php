@@ -23,7 +23,7 @@
 		}
 		else{
 			// 发送get请求到自己的域名下记录错误以便查看
-			httpGet('http://www.myDomain.com/RedChoco/log/fromThird.php?err=' . 'FromThird____'.$url.'__'.$result);
+			httpGet('http://www.myDomain.com/RedChoco/log/fromThird.php?err=' . 'FromThird____'.APPID.'__'.APPSECRET.'__'.$result);
 		}
 	}
 	
@@ -43,6 +43,6 @@
 	$sOpenID = getOpenID($sCode); // 根据code获取OpenID
 	
 	$receiveUrlWithOpenID = RECEIVE_URL . '?openid=' . $sOpenID . '&uniappname=' . UNIAPPNAME;
-	httpGet($receiveUrlWithOpenID);
+	header("Location: $receiveUrlWithOpenID");
 	
 ?>
