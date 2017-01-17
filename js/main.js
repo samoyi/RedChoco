@@ -45,7 +45,7 @@ xhr.addEventListener('readystatechange', function(){
 			document.addEventListener("touchend", hideResult);
 		}
 		else{
-			oResult.innerHTML = "发送失败。网络错误，请返回重试。";
+			oResult.innerHTML = xhr.status + " 发送失败。网络错误，请返回重试。";
 		}
 		bTouched = false;
 	}
