@@ -119,7 +119,7 @@
 
 <section id="initPHPInfo">
 	<input type="text" id="appid" placeholder="公众平台APPID" /><br />
-	<input type="text" id="appsecret" placeholder="公众平台APPSECRET" /><br />
+	<input type="text" id="appsecret" placeholder="公众平台APPSECRET。第三方提供OpenID时这里可填写任意字符" /><br />
 	<input type="text" id="mch_key" placeholder="商户平台MCH_KEY" /><br />
 	<input type="text" id="send_name" placeholder="红包发送者名称SEND_NAME" /><br />
 	<input type="number" id="mch_id" placeholder="商户ID MCH_ID" /><br />
