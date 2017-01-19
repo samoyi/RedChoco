@@ -66,8 +66,13 @@ if( isResPacketCode($sRedPacketCode) )
 					$WXredPacket->addLogs( $result ); // 记录错误
 				}
 				else{
-					echo "红包发送失败。<br />请稍后重试。"; // cUrl错误或其他微信接口相关的失败
-					$WXredPacket->resetCodeStatus(); // 将该兑换码重新变成没用过的状态
+					echo "兑换失败。勿刷新页面，<br />请退出后重新进入重试。"; // cUrl错误或其他微信接口相关的失败
+					/*
+					 * 这里其实用户已经中奖了，但因为发送失败所以没有领到红包
+					 * 所以这里重置状态码时应重置为必中的状态，即原是n的要重置为a
+					 * resetCodeStatus 函数传递了参数，来实现这一特殊的重置
+					 */
+					$WXredPacket->resetCodeStatus("a"); // 将该兑换码重新变成没用过的状态
 					$WXredPacket->addLogs( $result ); // 记录错误
 				}
 			}
