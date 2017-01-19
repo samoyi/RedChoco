@@ -57,12 +57,12 @@ if( isResPacketCode($sRedPacketCode) )
 				}
 				elseif( strstr($result, '该用户今日操作次数超过限制') ){
 					echo "今日领取红包达到最大数量<br />请明日再试";
-					$WXredPacket->resetCodeStatus(); // 将该兑换码重新变成没用过的状态
+					$WXredPacket->resetCodeStatus("", $nCodeStatus); // 将该兑换码重新变成没用过的状态
 					$WXredPacket->addLogs( $result ); // 记录错误
 				}
 				elseif( strstr($result, '此请求可能存在风险') ){
 					echo "微信账号异常<br />请使用常用的活跃微信号领取";
-					$WXredPacket->resetCodeStatus(); // 将该兑换码重新变成没用过的状态
+					$WXredPacket->resetCodeStatus("", $nCodeStatus); // 将该兑换码重新变成没用过的状态
 					$WXredPacket->addLogs( $result ); // 记录错误
 				}
 				else{
