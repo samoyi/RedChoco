@@ -42,7 +42,11 @@ xhr.addEventListener('readystatechange', function(){
 	if (xhr.readyState == 4){
 		if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304){
 			oResult.innerHTML = xhr.responseText;
-			document.addEventListener("touchend", hideResult);
+			setTimeout(function()
+			{
+				document.addEventListener("touchend", hideResult);
+			}, 1000);
+			
 		}
 		else{
 			oResult.innerHTML = xhr.status + " 发送失败。网络错误，请返回重试。";
