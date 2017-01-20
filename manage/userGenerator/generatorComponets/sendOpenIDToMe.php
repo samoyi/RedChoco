@@ -6,6 +6,10 @@
  * 用户授权后进入该文件
  * 该文件得到用户的OpenID然后发送给我
  */ 
+/*
+ * 一般情况下，在出现获取OpenID错误时应该把错误发送到自己的服务器上来记录和查看。搜索“sendErrToMe”对接受的错误的文件进行改写
+ */ 
+
  
 	define('APPID', ''); // 公众平台APPID
 	define('APPSECRET', ''); // APPSECRET
@@ -23,7 +27,7 @@
 		}
 		else{
 			// 发送get请求到自己的域名下记录错误以便查看
-			httpGet('http://www.myDomain.com/RedChoco/log/fromThird.php?err=' . 'FromThird____'.APPID.'__'.APPSECRET.'__'.$result);
+			// httpGet('我的域名下接受错误的文件的url?err=' . 'FromThird____'.APPID.'__'.APPSECRET.'__'.$result); // sendErrToMe
 		}
 	}
 	
