@@ -2,9 +2,6 @@
 
 class Generator{
 
-    private $prefix; // code前缀
-    private $amount; // 生成多少个code
-    private $merchantID; // 商户ID
 
     private $aChars; // 用来生成code的字符
     private $nLen; // 每个code的长度，包含前缀
@@ -14,10 +11,8 @@ class Generator{
     private $table;
 
 
-    function __construct($prefix, $amount, $merchantID){
-        $this->prefix = $prefix;
-        $this->amount = $amount;
-        $this->merchantID = $merchantID;
+    function __construct(){
+
         $this->aChars = str_split('23456789abcdefghjkmnpqrstuvwxyz');
         $this->nCodeLen = 8;
 
@@ -31,23 +26,23 @@ class Generator{
 
     // 检查当批码的配置
     private function checkConfig(){
-        if(!trim($this->prefix)){
+        if(!trim(PREFIX)){
             echo 'No prifix';
             throw new RuntimeException('No prifix');
         }
-        if(strlen(trim($this->prefix))>4){
+        if(strlen(trim(PREFIX))>4){
             echo 'Prifix is too long';
             throw new RuntimeException('Prifix is too long');
         }
-        if(!is_int($this->amount) || $this->amount<=0){
+        if(!is_int(AMOUNT) || AMOUNT<=0){
             'No amount';
             throw new RuntimeException('No amount');
         }
-        if(!trim($this->merchantID)){
+        if(!trim(MERCHANT_ID)){
             echo 'No merchantID';
             throw new RuntimeException('No merchantID');
         }
-        if(strlen(trim($this->merchantID))>16){
+        if(strlen(trim(MERCHANT_ID))>16){
             echo 'merchantID is too long';
             throw new RuntimeException('merchantID is too long');
         }
@@ -69,9 +64,9 @@ class Generator{
     private function generateOne(){
         $nCharAmount = count($this->aChars);
         $nIndex = -1; // 随机数在$this->aChars中的位置
-        $sCode = $this->prefix;    // 生成的码，初始带前缀，随后添加随机字符
+        $sCode = PREFIX;    // 生成的码，初始带前缀，随后添加随机字符
 
-        for($i=0; $i<$this->nCodeLen-strlen($this->prefix); $i++){
+        for($i=0; $i<$this->nCodeLen-strlen(PREFIX); $i++){
             $nIndex = mt_rand(0, $nCharAmount-1);
             $sCode .= $this->aChars[$nIndex];
         }
@@ -86,7 +81,7 @@ class Generator{
 
         $aAlready = $this->getCode();
         $set =  $this->getCode(); // 已存在的后续生成的都要放进$set,$set中不存在重复的code
-        $nAmount = $this->amount + count($aAlready);
+        $nAmount = AMOUNT + count($aAlready);
 
         while(count($set)<$nAmount){
             $newCode = $this->generateOne($this->aChars, $this->nCodeLen);
@@ -105,8 +100,8 @@ class Generator{
 
         foreach($codes as $value){
             $result = $this->sql->insertRow($this->table,
-                                                array('code', 'merchantID')
-                                                ,array($value, MERCHANT_ID));
+                                        array('code', 'merchantID', 'WechatID')
+                                        ,array($value, MERCHANT_ID, WECHAT_ID));
             if($result!==true){
                 $aErr[] = array($result, $value);
             }
