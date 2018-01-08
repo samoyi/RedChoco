@@ -3,4 +3,4 @@ handleRedPacketDraw_inuse.php
 getOpenIDandResponseFormpage_inuse.php
 WechatRedPack/getOpenID_inuse.php
 backendInfo.php
-codeManager/DBInfo.php
+manage/codeManager/DBInfo.php
