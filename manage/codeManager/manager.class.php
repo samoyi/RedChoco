@@ -100,8 +100,8 @@ class Generator{
 
         foreach($codes as $value){
             $result = $this->sql->insertRow($this->table,
-                                        array('code', 'merchantID', 'WechatID')
-                                        ,array($value, MERCHANT_ID, WECHAT_ID));
+                    array('code', 'merchantID', 'WechatID', 'generationDate')
+                    ,array($value, MERCHANT_ID, WECHAT_ID, date('Y-m-d')));
             if($result!==true){
                 $aErr[] = array($result, $value);
             }
