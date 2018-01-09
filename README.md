@@ -1,4 +1,7 @@
-# 输码抽微信红包
+# 多商户输码抽微信红包
+
+initInfo.php 中注释掉了 $redirect_uri = 'http://www.funca.org/redChoco/getOpenIDandResponseFormpage.php';
+好像没什么用
 
 ## 安全
 * `manage/merchantManager`目录的文件可以在本地环境运行，所以不要上传服务器
@@ -50,6 +53,26 @@
 
 ## 没有微信网页回调域名情况下的使用方法（需要通过拥有域名的第三方转发OpenID）
 
+
+## 逻辑
+1. 如果拥有商户微信公众号的网页回调域名，则可以从我们自己的域名下调用商户微信接口获取其
+   用户的OpenID。`manage/merchantManager/userGenerator/generator.php`生成的配置文
+   件中的注释内容即为该商户的授权页面。用户访问该链接，经过自动授权后，携带`uniappname`
+   参数跳转到`getOpenIDandResponseFormpage.php`。`uniappname`参数值为唯一的商户名，
+   用于读取商户的抽奖配置文件、奖品数据和微信公众号及微信支付配置。
+2. 如果商户微信公众号的网页回调域名被其他人占用，则必须让占用着代为获取OpenID，然后转发
+   到`getOpenIDandResponseFormpage.php`。这时接收到的参数也必须包括`uniappname`，同
+   时还包括一个值为用户`OpenID`的参数。
+3. `getOpenIDandResponseFormpage.php`中引入`WechatRedPack/getOpenID.php`文件。该
+   文件先检查是否有保存`OpenID`的参数。如果有则说明是第三方已经获取好的，这里直接取得该
+   `OpenID`。如果没有，说明是直接从授权页面跳转到这里，应该包含用来获取`OpenID`的
+   `code`参数，`getOpenID.php`使用该参数获取用户的`OpenID`。如果连`code`参数也没有，
+   则说明用户是直接访问的`getOpenIDandResponseFormpage.php`，这是就提示他从商户微信
+   公众号的菜单点击进入。
+4. 获取用户`OpenID`后，进入前端输码页面，提交后，用户输的码、`OpenID`和`uniappname`一
+   并提交给`handleRedPacketDraw.php`
+5. `handleRedPacketDraw.php`首先引入`initInfo.php`文件，该文件根据`uniappname`从
+   `WechatRedPack/merchantsInfo/`中加载该商户的配置文件。
 
 ## 微信接口
 * [现金红包](https://pay.weixin.qq.com/wiki/doc/api/tools/cash_coupon.php?chapter=13_1)
