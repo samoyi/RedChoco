@@ -84,10 +84,11 @@ class Generator{
         $nAmount = AMOUNT + count($aAlready);
 
         while(count($set)<$nAmount){
-            $newCode = $this->generateOne($this->aChars, $this->nCodeLen);
-            if(!in_array($newCode, $set)){ // 只加入不重复的
+            while(count($set)<$nAmount){
+                $newCode = $this->generateOne($this->aChars, $this->nCodeLen);
                 $set[] = $newCode;
             }
+            $set = array_unique($set);
         }
         return array_slice($set, count($aAlready));
     }
@@ -121,29 +122,6 @@ class Generator{
         return $return;
     }
 
-    // 使一批code失效
-    public function invalidate($aInvalidCode){
-        $aErr = array();
-        foreach($aInvalidCode as $code){
-            $result = $this->sql->updateData($this->table, array('bad')
-                                    , array('1'), 'code="'.$code.'"');
-            if($result!==true){
-                $aErr[] = array($result, $code);
-            }
-        }
-
-        $return = array(
-            'errCodes'=>$aErr
-        );
-        if(count($aErr)){
-            $return['isErr'] = true;
-        }
-        else{
-            $return['isErr'] = false;
-        }
-
-        return $return;
-    }
 
 
     public function closeDBC(){

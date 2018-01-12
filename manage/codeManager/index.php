@@ -2,6 +2,11 @@
 ini_set('display_errors', true);
 error_reporting(E_ALL);
 
+// 数据量比较大时
+set_time_limit(300);
+ini_set('memory_limit', '256M');
+
+
 // 设定以下三个常量并运行文件
 define('PREFIX', 'test'); // code前缀最多4位最少一位
 define('AMOUNT', 5); // code数量最少一个
@@ -19,19 +24,6 @@ $result = $generator->addCodes(AMOUNT);
 file_put_contents(PREFIX . '_codes.json', json_encode($result['newCodes']));
 $generator->closeDBC();
 var_dump(count($result['newCodes']));
-
-
-// 作废codes
-// $aInvalidCode = array(
-//     "test69r7",
-//     "testmzf9",
-//     "test6bn7",
-//     "testyqu9",
-//     "testck9s"
-// );
-// $result = $generator->invalidate($aInvalidCode);
-// $generator->closeDBC();
-// var_dump($result);
 
 
 ?>
